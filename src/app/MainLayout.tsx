@@ -7,7 +7,7 @@ export default function MainLayout() {
         <nav className="mx-auto flex w-full max-w-5xl items-center justify-between">
           <Link
             to="/"
-            className="font-[var(--font-heading)] text-2xl font-bold text-[var(--text-h)] no-underline"
+            className="text-2xl font-bold text-[var(--text-h)] no-underline"
           >
             Bibliomaniac
           </Link>

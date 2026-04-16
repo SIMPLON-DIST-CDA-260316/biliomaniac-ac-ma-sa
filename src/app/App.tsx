@@ -6,10 +6,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          {/* Add your routes here */}
-          {/* <Route index element={<Home />} /> */}
-          {/* <Route path="book/:id" element={<BookDetail />} /> */}
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={null} />
         </Route>
       </Routes>
     </BrowserRouter>
