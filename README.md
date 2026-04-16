@@ -84,7 +84,7 @@ Chaque push sur `main` déclenche un déploiement en production. Les pull reques
 
 ## Maquettes
 
-Les maquettes et le prototype cliquable sont disponibles sur [Figma](<lien-figma>).
+Les maquettes et le prototype cliquable sont disponibles sur [Figma](https://www.figma.com/design/lpQZAiqtNWMLWIBIDJIwcc/Bibliomaniac?node-id=0-1&p=f&t=gw2Q0vZHBBxem269-0).
 
 ## Auteurs
 
