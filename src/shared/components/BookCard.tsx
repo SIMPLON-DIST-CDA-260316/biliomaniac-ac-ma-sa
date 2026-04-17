@@ -1,6 +1,6 @@
-import type { BookCardProps } from '../../types/Book';
+import type { BookCardType } from '../../types/Book';
 
-export function BookCard({ book }: BookCardProps) {
+export function BookCard({ book }: { book: BookCardType }) {
   const { volumeInfo } = book;
   const { title, authors, imageLinks } = volumeInfo;
 

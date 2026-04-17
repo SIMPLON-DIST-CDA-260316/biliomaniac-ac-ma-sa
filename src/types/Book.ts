@@ -1,5 +1,4 @@
-export interface BookCardProps {
-  book: {
+export interface BookCardType {
     id: string;
     volumeInfo: {
       title: string;
@@ -9,4 +8,8 @@ export interface BookCardProps {
       };
     };
   };
+
+
+export interface BookListType {
+  books: BookCardType[];
 }
