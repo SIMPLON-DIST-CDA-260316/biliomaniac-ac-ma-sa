@@ -1,15 +1,4 @@
-interface BookCardProps {
-  book: {
-    id: string;
-    volumeInfo: {
-      title: string;
-      authors: string[];
-      imageLinks: {
-        thumbnail: string;
-      };
-    };
-  };
-}
+import type { BookCardProps } from '../../types/Book';
 
 export function BookCard({ book }: BookCardProps) {
   const { volumeInfo } = book;
