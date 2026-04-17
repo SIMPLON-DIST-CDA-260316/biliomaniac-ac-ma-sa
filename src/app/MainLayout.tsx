@@ -1,17 +1,11 @@
-import { Link, Outlet } from 'react-router';
+import { Outlet } from 'react-router';
+import Navbar from './Navbar';
 
 export default function MainLayout() {
   return (
     <div className="flex min-h-svh flex-col bg-[var(--bg)] text-[var(--text)]">
-      <header className="border-b border-[var(--border)] px-6 py-4">
-        <nav className="mx-auto flex w-full max-w-5xl items-center justify-between">
-          <Link
-            to="/"
-            className="text-2xl font-bold text-[var(--text-h)] no-underline"
-          >
-            Bibliomaniac
-          </Link>
-        </nav>
+      <header className="border-b border-[var(--border)] px-6 md:px-16">
+        <Navbar />
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
