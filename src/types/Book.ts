@@ -28,5 +28,5 @@ export interface BookCardType {
 }
 
 export interface BookListType {
-  books: BookCardType[];
+  books: Book[];
 }
