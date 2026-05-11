@@ -22,21 +22,18 @@ export function SearchBar({ onSearch, placeholder = 'Rechercher un livre...' }: 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-full max-w-xl overflow-hidden rounded-full my-6"
-      style={{ border: '1px solid rgba(41, 89, 98, 0.4)' }}
+      className="flex w-full max-w-xl overflow-hidden rounded-full my-6 border border-[rgba(41,89,98,0.4)]"
     >
       <input
         type="search"
         value={query}
         onChange={handleChange}
         placeholder={placeholder}
-        className="flex-1 bg-transparent px-5 py-2.5 text-sm outline-none"
-        style={{ color: 'var(--text-h)', fontFamily: 'var(--font)' }}
+        className="flex-1 bg-transparent px-5 py-2.5 text-sm outline-none text-(--text-h) font-(--font)"
       />
       <button
         type="submit"
-        className="px-4 transition-colors"
-        style={{ color: 'var(--text)' }}
+        className="px-4 transition-colors text-(--text)"
         aria-label="Rechercher"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -38,14 +38,14 @@ export default function NosLivres() {
   return (
     <section className="flex flex-col gap-10">
       <header className="flex flex-col items-center gap-6">
-        <h1 className="text-4xl md:text-5xl font-semibold" style={{ color: 'var(--text-h)' }}>
+        <h1 className="text-4xl md:text-5xl font-semibold text-(--text-h)">
           Nos livres
         </h1>
         <SearchBar onSearch={handleSearch} />
       </header>
 
       {error && (
-        <p className="italic" style={{ color: 'var(--text)' }}>{error}</p>
+        <p className="italic text-(--text)">{error}</p>
       )}
 
       <BooksList books={books} loading={loading} />
