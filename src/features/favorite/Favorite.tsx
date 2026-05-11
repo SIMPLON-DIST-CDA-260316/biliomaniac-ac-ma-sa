@@ -1,25 +1,23 @@
-import { useState } from "react";
+// src/components/FavoriteButton.tsx
+import { useFavoris } from '../../features/useFavoris';
 
 interface Props {
-    bookId: string | number;
-    defaultFavorite?: boolean;
+  bookId: string;
 }
 
-const FavoriteButton = ({ defaultFavorite = false }: Props) => {
-    const [isFavorite, setIsFavorite] = useState(defaultFavorite);
+const FavoriteButton = ({ bookId }: Props) => {
+  const { isFavorite, toggleFavorite } = useFavoris();
 
-    const handleClick = () => {
-        setIsFavorite((prev) => !prev);
-    };
-
-    return (
-        <img
-            src={isFavorite ? "/images/starFull.svg" : "/images/starEmpty.svg"}
-            alt=""
-            onClick={handleClick}
-            className="cursor-pointer"
-        />
-    );
+  return (
+    <img
+      src={
+        isFavorite(bookId) ? '/images/starFull.svg' : '/images/starEmpty.svg'
+      }
+      alt=""
+      onClick={() => toggleFavorite(bookId)}
+      className="cursor-pointer"
+    />
+  );
 };
 
 export default FavoriteButton;

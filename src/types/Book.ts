@@ -20,9 +20,9 @@ export interface BookCardType {
   id: string;
   volumeInfo: {
     title: string;
-    authors: string[];
-    imageLinks: {
-      thumbnail: string;
+    authors?: string[];
+    imageLinks?: {
+      thumbnail?: string;
     };
   };
 }

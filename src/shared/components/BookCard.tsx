@@ -1,10 +1,22 @@
 import type { BookCardType } from '../../types/Book';
+import FavoriteButton from './Favorite';
 
 export function BookCard({ book }: { book: BookCardType }) {
   const { volumeInfo } = book;
   const { title, authors, imageLinks } = volumeInfo;
 
   return (
+    <div className="flex flex-col items-center gap-1 w-[112px] lg:w-[150px] h-[260px] lg:h-[320px]">
+      <div>
+        <img
+          src={imageLinks.thumbnail}
+          alt={title}
+          className="rounded-[15px] w-[112px] lg:w-[150px] h-[165px] lg:h-[220px] object-cover mb-2 md:mb-3"
+        />
+        <div className="absolute top-2 right-2">
+          <FavoriteButton bookId={book.id} />
+        </div>
+      </div>
     <div className="flex flex-col items-center gap-1 w-[112px] lg:w-[150px] h-[260px] lg:h-[320px] lg:transition-transform lg:duration-200 lg:hover:scale-105 lg:cursor-pointer">
       <img
         src={imageLinks.thumbnail}
