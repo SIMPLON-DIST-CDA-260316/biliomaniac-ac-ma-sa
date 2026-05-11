@@ -16,7 +16,7 @@ const CATEGORIES = [
   'cooking',
   'fantasy',
 ];
-const BOOKS_PER_CATEGORY = 6;
+const BOOKS_PER_CATEGORY = 10;
 
 // Quelle tranche du catalogue va à chaque page.
 const NOUVEAUTES_SLICE = [0, 20] as const;
