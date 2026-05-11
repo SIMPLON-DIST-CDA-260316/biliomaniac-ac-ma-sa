@@ -13,9 +13,20 @@ export interface Book {
     };
     industryIdentifiers?: Array<{ type: string; identifier: string }>;
   };
-  coverUrls: string[];
+  coverUrls?: string[];
 }
 
-export interface BookCardProps {
-  book: Book;
+export interface BookCardType {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors: string[];
+    imageLinks: {
+      thumbnail: string;
+    };
+  };
+}
+
+export interface BookListType {
+  books: BookCardType[];
 }
