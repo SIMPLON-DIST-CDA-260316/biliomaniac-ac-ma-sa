@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
-import MainLayout from '../shared/layout/MainLayout.tsx';
+import MainLayout from '../shared/layout/MainLayout';
 import Accueil from '../Pages/Accueil';
 import NosLivres from '../Pages/NosLivres';
 import Nouveautes from '../Pages/Nouveautes';
