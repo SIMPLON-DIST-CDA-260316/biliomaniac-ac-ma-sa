@@ -14,6 +14,7 @@ export interface Book {
     industryIdentifiers?: Array<{ type: string; identifier: string }>;
   };
   coverUrls?: string[];
+  fetchedCategory?: string;
 }
 
 export interface BookCardType {
