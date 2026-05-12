@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { BooksList } from '../shared/components/BooksList';
 import { useEmprunts } from '../features/useEmprunts';
-import { useFavoris } from '../features/useFavoris';
+import { useFavoris } from '../features/favorite/useFavoris.ts';
 import { fetchBooksByIds } from '../shared/data/BookFetch';
 import type { Book } from '../types/Book';
+
+type Filtre = 'tous' | 'favoris' | 'en_cours' | 'rendus';
 
 export default function MaBibliotheque() {
   const { emprunts } = useEmprunts();
   const { favoris } = useFavoris();
-  const [books, setBooks] = useState<Book[]>([]);
+
+  const [books, setBooks] = useState<Book[]>([]); // ✅ Une seule liste
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filtre, setFiltre] = useState<Filtre>('tous');
 
   useEffect(() => {
     async function loadBooks() {
@@ -18,27 +22,29 @@ export default function MaBibliotheque() {
         setLoading(true);
         setError(null);
 
-        // Récupère les IDs des livres empruntés ET favoris
-        const empruntIds = emprunts
+        const enCoursIds = emprunts
           .filter((e) => e.statut === 'en_cours')
           .map((e) => e.volumeId);
-        const allIds = [...new Set([...empruntIds, ...favoris])]; // Évite les doublons
+
+        const rendusIds = emprunts
+          .filter((e) => e.statut === 'rendu')
+          .map((e) => e.volumeId);
+
+        const allIds = [...new Set([...favoris, ...enCoursIds, ...rendusIds])];
 
         if (allIds.length === 0) {
           setBooks([]);
           return;
         }
 
-        // Fetch les détails des livres via l'API
-        const fetchedBooks = await fetchBooksByIds(allIds);
-        setBooks(fetchedBooks);
+        const allBooks = await fetchBooksByIds(allIds);
+        setBooks(allBooks);
       } catch (err) {
         setError(
           err instanceof Error
             ? err.message
             : 'Erreur lors du chargement des livres',
         );
-        setBooks([]);
       } finally {
         setLoading(false);
       }
@@ -47,17 +53,43 @@ export default function MaBibliotheque() {
     loadBooks();
   }, [emprunts, favoris]);
 
+  const booksAffiches = books.filter((book) => {
+    if (filtre === 'tous') return true;
+    if (filtre === 'favoris') return favoris.includes(book.id);
+    if (filtre === 'en_cours') {
+      return emprunts.some(
+        (e) => e.volumeId === book.id && e.statut === 'en_cours',
+      );
+    }
+    if (filtre === 'rendus') {
+      return emprunts.some(
+        (e) => e.volumeId === book.id && e.statut === 'rendu',
+      );
+    }
+    return true;
+  });
+
   return (
     <section>
       <h1 className="mb-6 text-center text-2xl">Ma bibliothèque</h1>
-      <p className="text-xl mb-5">filtres</p>
 
-      {loading && <p className="text-center">Chargement...</p>}
-      {error && <p className="text-center text-red-500">Erreur: {error}</p>}
-      {!loading && books.length === 0 && (
-        <p className="text-center">Aucun livre dans votre bibliothèque</p>
+      <select
+        value={filtre}
+        onChange={(e) => setFiltre(e.target.value as Filtre)}
+        className="mb-6 px-4 py-2 rounded-lg border border-gray-300 text-sm"
+      >
+        <option value="tous">Mes livres</option>
+        <option value="favoris">Mes favoris</option>
+        <option value="en_cours">En cours d'emprunt</option>
+        <option value="rendus">Déjà lus</option>
+      </select>
+
+      {error && <p className="text-center text-red-500">Erreur : {error}</p>}
+
+      {!loading && booksAffiches.length === 0 && (
+        <p className="text-center">Aucun livre dans cette catégorie</p>
       )}
-      {!loading && books.length > 0 && <BooksList books={books} />}
+      <BooksList books={booksAffiches} loading={loading} />
     </section>
   );
 }

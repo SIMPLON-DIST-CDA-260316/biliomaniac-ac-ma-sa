@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { SEED_DATA } from '../shared/data/seed';
+import { useState } from 'react';
+import { SEED_DATA } from '../../shared/data/seed.ts';
 
 const STORAGE_KEY = 'bibliomaniac_favoris';
 const SEEDED_KEY = 'bibliomaniac_seeded_favoris';
@@ -14,11 +14,7 @@ function initFavoris(): string[] {
 }
 
 export function useFavoris() {
-  const [favoris, setFavoris] = useState<string[]>([]);
-
-  useEffect(() => {
-    setFavoris(initFavoris());
-  }, []);
+  const [favoris, setFavoris] = useState<string[]>(() => initFavoris());
 
   function toggleFavorite(bookId: string) {
     const updated = favoris.includes(bookId)

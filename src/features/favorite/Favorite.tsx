@@ -1,20 +1,17 @@
-// src/components/FavoriteButton.tsx
-import { useFavoris } from '../../features/useFavoris';
-
 interface Props {
-  bookId: string;
+  isFavorite: boolean;
+  onToggle: () => void;
 }
 
-const FavoriteButton = ({ bookId }: Props) => {
-  const { isFavorite, toggleFavorite } = useFavoris();
+const FavoriteButton = ({ isFavorite, onToggle }: Props) => {
 
   return (
     <img
       src={
-        isFavorite(bookId) ? '/images/starFull.svg' : '/images/starEmpty.svg'
+        isFavorite ? '/images/starFull.svg' : '/images/starEmpty.svg'
       }
-      alt=""
-      onClick={() => toggleFavorite(bookId)}
+      alt="favoris"
+      onClick={onToggle}
       className="cursor-pointer"
     />
   );
