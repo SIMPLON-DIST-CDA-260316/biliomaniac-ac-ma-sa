@@ -13,12 +13,9 @@ const FavoriteButton = ({ defaultFavorite = false }: Props) => {
     };
 
     return (
-        <img
-            src={isFavorite ? "/images/starFull.svg" : "/images/starEmpty.svg"}
-            alt=""
-            onClick={handleClick}
-            className="cursor-pointer"
-        />
+        <img src={isFavorite ? "/images/starFull.svg" : "/images/starEmpty.svg"}
+        alt="" onClick={handleClick}
+        className="cursor-pointer w-8 h-8"/>
     );
 };
 

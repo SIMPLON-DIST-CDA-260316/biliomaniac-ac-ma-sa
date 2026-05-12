@@ -1,10 +1,12 @@
 import type { BookCardType } from '../../types/Book';
+import { Link } from "react-router";
 
 export function BookCard({ book }: { book: BookCardType }) {
   const { volumeInfo } = book;
   const { title, authors, imageLinks } = volumeInfo;
 
   return (
+    <Link to={`/livres/${book.id}`}>
     <div className="flex flex-col items-center gap-1 w-[112px] lg:w-[150px] h-[260px] lg:h-[320px]">
       <img
         src={imageLinks.thumbnail}
@@ -19,5 +21,6 @@ export function BookCard({ book }: { book: BookCardType }) {
         {authors.join(', ')}
       </p>
     </div>
+  </Link>
   );
 }

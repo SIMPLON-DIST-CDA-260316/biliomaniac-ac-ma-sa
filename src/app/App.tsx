@@ -5,6 +5,7 @@ import NosLivres from '../Pages/NosLivres';
 import Nouveautes from '../Pages/Nouveautes';
 import CoupDeCoeur from '../Pages/CoupDeCoeur';
 import MaBibliotheque from '../Pages/MaBibliotheque';
+import BookDetail from '../Pages/BookDetail';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="nouveautes" element={<Nouveautes />} />
           <Route path="coup-coeur" element={<CoupDeCoeur />} />
           <Route path="ma-bibliotheque" element={<MaBibliotheque />} />
+          <Route path="livres/:id" element={<BookDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
