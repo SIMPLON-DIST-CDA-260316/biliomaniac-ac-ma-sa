@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 
 export default function MainLayout() {
   return (
@@ -8,7 +8,7 @@ export default function MainLayout() {
         <Navbar />
       </header>
 
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
+      <main className="mx-auto w-full max-w-[1400px] flex-1 px-6 py-8">
         <Outlet />
       </main>
 
