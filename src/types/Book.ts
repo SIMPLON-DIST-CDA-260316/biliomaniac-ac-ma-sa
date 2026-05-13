@@ -1,3 +1,5 @@
+import type { Statut } from '../features/useEmprunts.ts';
+
 export interface Book {
   id: string;
   volumeInfo: {
@@ -14,19 +16,23 @@ export interface Book {
     industryIdentifiers?: Array<{ type: string; identifier: string }>;
   };
   coverUrls?: string[];
+  fetchedCategory?: string;
 }
 
 export interface BookCardType {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors: string[];
-    imageLinks: {
-      thumbnail: string;
-    };
-  };
+  book: Book;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 }
 
-export interface BookListType {
+export interface BooksListProps {
   books: Book[];
+  loading?: boolean;
+}
+
+export interface EmpruntType {
+  volumeId: string;
+  dateEmprunt: string;
+  dateRestitution: string;
+  statut: Statut;
 }
