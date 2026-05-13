@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import MainLayout from '../shared/layout/MainLayout';
+import { CatalogueProvider } from '../shared/context/CatalogueProvider';
 import Accueil from '../Pages/Accueil';
 import NosLivres from '../Pages/NosLivres';
 import Nouveautes from '../Pages/Nouveautes';
@@ -10,6 +11,7 @@ import BookDetail from '../Pages/BookDetail';
 export default function App() {
   return (
     <BrowserRouter>
+      <CatalogueProvider>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Accueil />} />
@@ -20,6 +22,7 @@ export default function App() {
           <Route path="livres/:id" element={<BookDetail />} />
         </Route>
       </Routes>
+      </CatalogueProvider>
     </BrowserRouter>
   );
 }

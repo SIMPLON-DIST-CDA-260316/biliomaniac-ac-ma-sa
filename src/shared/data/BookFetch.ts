@@ -166,7 +166,12 @@ export async function fetchBookById(id: string): Promise<Book> {
 // Passez la liste d'IDs (localStorage, context React, peu importe d'où elle vient)
 // — cette fonction sait juste récupérer les livres qui vont avec.
 export async function fetchBooksByIds(ids: string[]): Promise<Book[]> {
-  return Promise.all(ids.map(fetchBookById));
+  let catalogue: Book[] = [];
+  try { catalogue = await getCatalogue(); } catch { /* catalogue pas encore chargé */ }
+  return Promise.all(ids.map((id) => {
+    const cached = catalogue.find((b) => b.id === id);
+    return cached ?? fetchBookById(id);
+  }));
 }
 
 // Barre de recherche (phase 4) → recherche libre sur Google Books.

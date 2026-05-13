@@ -1,27 +1,18 @@
-import {useEffect, useState} from 'react';
-import { fetchNouveautes } from '../shared/data/BookFetch.ts';
 import { BooksList } from '../shared/components/BooksList.tsx';
-import type { Book } from '../types/Book.ts';
+import { useCatalogue } from '../shared/context/useCatalogue';
 
 export default function Nouveautes() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchNouveautes()
-      .then(setBooks)
-      .catch(() => setError('Impossible de charger les nouveautés.'))
-      .finally(() => setLoading(false));
-  }, []);
+  const { nouveautes: books, loading, error } = useCatalogue();
 
   return (
-    <section className="flex flex-col items-center gap-10">
-      <h1 className="text-4xl md:text-5xl font-semibold text-(--text-h)">
-        Nouveautés
-      </h1>
+    <section className="flex flex-col gap-10">
+      <header className="flex flex-col items-center gap-6">
+        <h1 className="text-4xl md:text-5xl font-semibold text-(--text-h)">
+          Nouveautés
+        </h1>
+      </header>
 
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <p className="italic text-(--text)">{error}</p>}
 
       <BooksList books={books} loading={loading} />
     </section>
