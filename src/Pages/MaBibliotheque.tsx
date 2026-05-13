@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BooksList } from '../shared/components/BooksList';
 import { useEmprunts } from '../features/useEmprunts';
 import { useFavoris } from '../features/favorite/useFavoris.ts';
@@ -10,11 +10,23 @@ type Filtre = 'tous' | 'favoris' | 'en_cours' | 'rendus';
 export default function MaBibliotheque() {
   const { emprunts } = useEmprunts();
   const { favoris } = useFavoris();
+  const ref = useRef<HTMLDivElement>(null);
 
-  const [books, setBooks] = useState<Book[]>([]); // ✅ Une seule liste
+  const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filtre, setFiltre] = useState<Filtre>('tous');
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     async function loadBooks() {
@@ -69,20 +81,67 @@ export default function MaBibliotheque() {
     return true;
   });
 
-  return (
-    <section>
-      <h1 className="mb-6 text-center text-2xl">Ma bibliothèque</h1>
+  const filtreLabel = {
+    tous: 'Mes livres',
+    favoris: 'Mes favoris',
+    en_cours: "En cours d'emprunt",
+    rendus: 'Déjà lus',
+  };
 
-      <select
-        value={filtre}
-        onChange={(e) => setFiltre(e.target.value as Filtre)}
-        className="mb-6 px-4 py-2 rounded-lg border border-gray-300 text-sm"
-      >
-        <option value="tous">Mes livres</option>
-        <option value="favoris">Mes favoris</option>
-        <option value="en_cours">En cours d'emprunt</option>
-        <option value="rendus">Déjà lus</option>
-      </select>
+  return (
+    <section className="flex flex-col gap-10">
+      <header className="flex flex-col items-center gap-6">
+        <h1 className="text-4xl md:text-5xl font-semibold text-(--text-h)">
+          Ma bibliothèque
+        </h1>
+
+        <div ref={ref} className="relative">
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            aria-label="Filtrer les livres"
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm transition-colors ${
+              filtre !== 'tous'
+                ? 'border-(--text-hover) text-(--text-hover)'
+                : 'border-[rgba(41,89,98,0.4)] text-(--text) hover:border-(--text-hover) hover:text-(--text-hover)'
+            }`}
+          >
+            <img
+              src="/images/filtre.png"
+              alt=""
+              aria-hidden="true"
+              className="w-4 h-4 opacity-60"
+            />
+            {filtreLabel[filtre]}
+          </button>
+
+          {open && (
+            <div
+              className="absolute top-full mt-2 right-0 z-50 w-full rounded-xl py-1 shadow-lg"
+              style={{
+                background: 'var(--bg)',
+                border: '1px solid var(--border)',
+              }}
+            >
+              {Object.entries(filtreLabel).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => {
+                    setFiltre(value as Filtre);
+                    setOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 text-sm transition-colors hover:text-(--text-hover) ${
+                    filtre === value
+                      ? 'text-(--text-hover) font-semibold'
+                      : 'text-(--text)'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
 
       {error && <p className="text-center text-red-500">Erreur : {error}</p>}
 
