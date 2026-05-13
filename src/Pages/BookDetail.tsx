@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import type { Book } from "../types/Book";
+import { ReservedButton } from "../shared/components/ReservedButton";
 
 function removeHtmlTags(raw: string) {
   return raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -162,9 +163,7 @@ export default function BookDetail() {
             </div>
           )}
 
-          <button className="mt-2 w-fit bg-black text-white text-sm px-6 py-2 rounded hover:bg-gray-800 transition-colors">
-            Réserver
-          </button>
+          <ReservedButton />
         </div>
       </div>
     </section>
