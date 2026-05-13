@@ -4,7 +4,7 @@ const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1';
 const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
 
 // Les catégories qu'on fetch pour remplir le catalogue. Change la liste pour changer les livres de l'app.
-const CATEGORIES = [
+export const CATEGORIES = [
   'Fiction',
   'classics',
   'biography',
@@ -102,13 +102,13 @@ async function fetchCategory(category: string): Promise<Book[]> {
   return items
     .filter(hasRequiredFields)
     .slice(0, BOOKS_PER_CATEGORY)
-    .map(clearImages);
+    .map((book) => ({ ...clearImages(book), fetchedCategory: category }));
 }
 
 // On fetch les catégories 4 par 4, sinon Google throttle. Si une catégorie plante
 // on garde les autres — on throw seulement si tout plante.
 async function fetchCatalogue(): Promise<Book[]> {
-  const CONCURRENCY = 4;
+  const CONCURRENCY = 3;
   const allBooks: Book[] = [];
   for (let i = 0; i < CATEGORIES.length; i += CONCURRENCY) {
     const batch = CATEGORIES.slice(i, i + CONCURRENCY);

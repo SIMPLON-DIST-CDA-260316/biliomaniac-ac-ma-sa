@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { BooksList } from '../shared/components/BooksList';
+import { CategoryFilter } from '../shared/components/CategoryFilter';
 import { SearchBar } from '../shared/components/SearchBar';
-import { fetchNosLivres } from '../shared/data/BookFetch';
+import { CATEGORIES, fetchNosLivres } from '../shared/data/BookFetch';
 import type { Book } from '../types/Book';
 
 export default function NosLivres() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const catalogue = useRef<Book[]>([]);
 
   useEffect(() => {
@@ -20,19 +23,30 @@ export default function NosLivres() {
       .finally(() => setLoading(false));
   }, []);
 
-  function handleSearch(query: string) {
-    if (query === '') {
-      setBooks(catalogue.current);
-      return;
-    }
+  function applyFilters(query: string, category: string | null) {
     const q = query.toLowerCase();
     setBooks(
       catalogue.current.filter((book) => {
-        const title = book.volumeInfo.title.toLowerCase();
-        const authors = (book.volumeInfo.authors ?? []).join(' ').toLowerCase();
-        return title.includes(q) || authors.includes(q);
+        const matchesSearch =
+          q === '' ||
+          book.volumeInfo.title.toLowerCase().includes(q) ||
+          (book.volumeInfo.authors ?? []).join(' ').toLowerCase().includes(q);
+        const matchesCategory =
+          category === null ||
+          book.fetchedCategory === category;
+        return matchesSearch && matchesCategory;
       })
     );
+  }
+
+  function handleSearch(query: string) {
+    setSearchQuery(query);
+    applyFilters(query, selectedCategory);
+  }
+
+  function handleFilter(category: string | null) {
+    setSelectedCategory(category);
+    applyFilters(searchQuery, category);
   }
 
   return (
@@ -41,7 +55,14 @@ export default function NosLivres() {
         <h1 className="text-4xl md:text-5xl font-semibold text-(--text-h)">
           Nos livres
         </h1>
-        <SearchBar onSearch={handleSearch} />
+        <div className="flex items-center gap-2 w-full max-w-xl">
+          <SearchBar onSearch={handleSearch} />
+          <CategoryFilter
+            categories={CATEGORIES}
+            selected={selectedCategory}
+            onFilter={handleFilter}
+          />
+        </div>
       </header>
 
       {error && (
