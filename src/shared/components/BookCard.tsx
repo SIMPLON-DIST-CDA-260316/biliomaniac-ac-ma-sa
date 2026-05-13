@@ -1,6 +1,7 @@
 import type { BookCardType } from '../../types/Book';
 import FavoriteButton from '../../features/favorite/Favorite';
 import { useEmprunts } from '../../features/useEmprunts.ts';
+import { Link } from "react-router";
 
 
 export function BookCard({
@@ -16,6 +17,7 @@ export function BookCard({
   const rendu = estRendu(book.id);
 
   return (
+    <Link to={`/livres/${book.id}`}>
     <div className="flex flex-col items-center gap-1 w-[112px] lg:w-[150px] h-[260px] lg:h-[320px] lg:transition-transform lg:duration-200 lg:hover:scale-105 lg:cursor-pointer">
       <div className="relative">
         <img
@@ -52,5 +54,6 @@ export function BookCard({
         {authors?.join(', ')}
       </p>
     </div>
+  </Link>
   );
 }
