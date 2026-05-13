@@ -1,25 +1,20 @@
-import { useState } from "react";
-
 interface Props {
-    bookId: string | number;
-    defaultFavorite?: boolean;
+  isFavorite: boolean;
+  onToggle: () => void;
 }
 
-const FavoriteButton = ({ defaultFavorite = false }: Props) => {
-    const [isFavorite, setIsFavorite] = useState(defaultFavorite);
+const FavoriteButton = ({ isFavorite, onToggle }: Props) => {
 
-    const handleClick = () => {
-        setIsFavorite((prev) => !prev);
-    };
-
-    return (
-        <img
-            src={isFavorite ? "/images/starFull.svg" : "/images/starEmpty.svg"}
-            alt=""
-            onClick={handleClick}
-            className="cursor-pointer"
-        />
-    );
+  return (
+    <img
+      src={
+        isFavorite ? '/images/starFull.svg' : '/images/starEmpty.svg'
+      }
+      alt="favoris"
+      onClick={onToggle}
+      className="cursor-pointer"
+    />
+  );
 };
 
 export default FavoriteButton;
