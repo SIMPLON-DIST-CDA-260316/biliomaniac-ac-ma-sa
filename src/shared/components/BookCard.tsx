@@ -17,15 +17,15 @@ export function BookCard({
   const rendu = estRendu(book.id);
 
   return (
-    <Link to={`/livres/${book.id}`}>
     <div className="flex flex-col items-center gap-1 w-[112px] lg:w-[150px] h-[260px] lg:h-[320px] lg:transition-transform lg:duration-200 lg:hover:scale-105 lg:cursor-pointer">
       <div className="relative">
+      <Link to={`/livres/${book.id}`}>
         <img
           src={imageLinks?.thumbnail}
           alt={title}
           className="rounded-[15px] w-[112px] lg:w-[150px] h-[165px] lg:h-[220px] object-cover mb-2 md:mb-3 shadow-[3px_3px_6px_rgba(0,0,0,0.25)] lg:shadow-[5px_5px_10px_rgba(0,0,0,0.6)]"
         />
-
+        </Link>
         <div className="absolute top-1 right-1 cursor-pointer w-8 h-8 flex items-center justify-center">
           <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
         </div>
@@ -54,6 +54,5 @@ export function BookCard({
         {authors?.join(', ')}
       </p>
     </div>
-  </Link>
   );
 }
