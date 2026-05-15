@@ -11,6 +11,14 @@ function extractCategory(cat: string) {
   return cat.split("/")[0].trim();
 }
 
+function getGoogleBooksHiResCover(volumeId: string) {
+  return [
+    `https://books.google.com/books/publisher/content/images/frontcover/${volumeId}?fife=w1600-h2400&source=gbs_api`,
+    `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&zoom=6&source=gbs_api`,
+    `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&zoom=4&source=gbs_api`,
+  ];
+}
+
 export default function BookDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -19,6 +27,7 @@ export default function BookDetail() {
   const [isFetching, setIsFetching] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [resumeOuvert, setResumeOuvert] = useState(false);
+  const [coverIndex, setCoverIndex] = useState(0);
 
   useEffect(() => {
     if (!id) return;
@@ -71,7 +80,9 @@ export default function BookDetail() {
 
   const { title, authors, description, publisher, publishedDate, categories, imageLinks } = bookData.volumeInfo;
 
-  const couverture = imageLinks?.thumbnail ?? imageLinks?.smallThumbnail ?? null;
+  const hiResUrls = id ? getGoogleBooksHiResCover(id) : [];
+  const fallbackCover = imageLinks?.thumbnail ?? imageLinks?.smallThumbnail ?? null;
+  const couverture = hiResUrls[coverIndex] ?? fallbackCover;
 
   let auteurs = null;
   if (authors && authors.length > 0) {
@@ -111,6 +122,13 @@ export default function BookDetail() {
               src={couverture}
               alt={`Couverture de ${title}`}
               className="w-44 rounded shadow-lg"
+              onError={() => {
+                if (coverIndex < hiResUrls.length - 1) {
+                  setCoverIndex(coverIndex + 1);
+                } else if (fallbackCover && couverture !== fallbackCover) {
+                  setCoverIndex(hiResUrls.length);
+                }
+              }}
             />
           ) : (
             <div className="w-44 h-64 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-sm">
